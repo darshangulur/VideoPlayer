@@ -9,6 +9,10 @@ import UIKit
 import AVFoundation
 
 final class VideoPlayerView: UIView {
+    enum Constants {
+        static let statusKeyPath = #keyPath(AVPlayerItem.status)
+    }
+    
     private var playerItemContext = 0
     private var playerItem: AVPlayerItem?
     
@@ -32,7 +36,7 @@ final class VideoPlayerView: UIView {
                 withURL: url
             ) { [weak self] asset in
                 guard let asset = asset else {
-                    print("Asset is nil.")
+                    print("Asset could not be loaded.")
                     return
                 }
                 
@@ -48,7 +52,7 @@ final class VideoPlayerView: UIView {
     deinit {
         playerItem?.removeObserver(
             self,
-            forKeyPath: #keyPath(AVPlayerItem.status)
+            forKeyPath: Constants.statusKeyPath
         )
         
         [endTimeObserver, periodicTimeObserver].forEach {
@@ -99,7 +103,7 @@ final class VideoPlayerView: UIView {
         playerItem = AVPlayerItem(asset: asset)
         playerItem?.addObserver(
             self,
-            forKeyPath: #keyPath(AVPlayerItem.status),
+            forKeyPath: Constants.statusKeyPath,
             options: [.old, .new],
             context: &playerItemContext
         )
@@ -136,7 +140,7 @@ final class VideoPlayerView: UIView {
             return
         }
         
-        guard keyPath == #keyPath(AVPlayerItem.status) else {
+        guard keyPath == Constants.statusKeyPath else {
             return
         }
         
