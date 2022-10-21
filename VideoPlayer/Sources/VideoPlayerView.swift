@@ -8,7 +8,7 @@
 import UIKit
 import AVFoundation
 
-///  A ``UIView`` to play video content.
+///  A ``UIView`` to present video content.
 final class VideoPlayerView: UIView {
     private enum Constants {
         static let statusKeyPath = #keyPath(AVPlayerItem.status)
@@ -26,7 +26,7 @@ final class VideoPlayerView: UIView {
     // MARK: Initializers
     /// Initializes a ``VideoPlayerView``.
     ///  - Parameters:
-    ///    - url: A ``URL`` to the video content resource to be played.
+    ///    - url: A ``URL`` of the video content resource to be played.
     init(url: URL) {
         self.url = url
         
