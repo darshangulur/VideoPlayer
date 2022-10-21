@@ -74,6 +74,12 @@ final class VideoPlayerView: UIView {
     }
     
     private func loadContent() {
+        // Note: I wasn't sure if the Tech Assessment needed to be built with this complexity of loading the
+        // asset from the URl, observing key paths for status changes and playing the asset using the AVPlayer.
+        // There's also an easier way to just play it directly using the `AVPlayer` and set the
+        // `avPlayerLayer.player` property with the `player` instance.
+        
+        // A `Task` to carry out the async operation.
         Task {
             await asset(
                 withURL: url
