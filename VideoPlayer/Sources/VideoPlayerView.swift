@@ -27,15 +27,17 @@ final class VideoPlayerView: UIView {
         
         setUpObservers()
         
-        asset(
-            withURL: url
-        ) { [weak self] asset in
-            guard let asset = asset else {
-                print("Asset is nil.")
-                return
+        Task {
+            await asset(
+                withURL: url
+            ) { [weak self] asset in
+                guard let asset = asset else {
+                    print("Asset is nil.")
+                    return
+                }
+                
+                self?.loadAVPlayerItem(withAsset: asset)
             }
-            
-            self?.loadAVPlayerItem(withAsset: asset)
         }
     }
     
@@ -74,30 +76,23 @@ final class VideoPlayerView: UIView {
         }
     }
     
-    private func asset(withURL url: URL, onLoading: @escaping (AVAsset?) -> Void) {
+    private func asset(withURL url: URL, onLoading: @escaping (AVAsset?) -> Void) async {
         let asset = AVAsset(url: url)
-        let playableKey = "playable"
-        asset.loadValuesAsynchronously(
-            forKeys: [playableKey],
-            completionHandler: {
-                var error: NSError?
-                let status = asset.statusOfValue(
-                    forKey: playableKey,
-                    error: &error
-                )
-                
-                switch status {
-                case .loaded:
-                    onLoading(asset)
-                    
-                case .failed:
-                    onLoading(nil)
-                    
-                default:
-                    break
-                }
-            }
-        )
+        guard (try? await asset.load(.isPlayable)) == true else {
+            onLoading(nil)
+            return
+        }
+        
+        switch asset.status(of: .isPlayable) {
+        case .loaded:
+            onLoading(asset)
+            
+        case .failed:
+            onLoading(nil)
+            
+        default:
+            break
+        }
     }
     
     private func loadAVPlayerItem(withAsset asset: AVAsset) {
