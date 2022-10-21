@@ -12,15 +12,20 @@ final class VideoPlayerView: UIView {
     private var playerItemContext = 0
     private var playerItem: AVPlayerItem?
     
+    private var endTimeObserver: NSObjectProtocol?
+    private var periodicTimeObserver: Any?
+    
     private lazy var avPlayerLayer = AVPlayerLayer()
     private let url: URL
     
     // MARK: Initializers
     init(url: URL) {
         self.url = url
-        super.init(frame: .zero)
         
+        super.init(frame: .zero)
         layer.addSublayer(avPlayerLayer)
+        
+        setUpObservers()
         
         asset(
             withURL: url
@@ -43,6 +48,12 @@ final class VideoPlayerView: UIView {
             self,
             forKeyPath: #keyPath(AVPlayerItem.status)
         )
+        
+        [endTimeObserver, periodicTimeObserver].forEach {
+            if let endTimeObserver = $0 {
+                NotificationCenter.default.removeObserver(endTimeObserver)
+            }
+        }
     }
     
     // MARK: Overrides
@@ -52,7 +63,17 @@ final class VideoPlayerView: UIView {
         avPlayerLayer.frame = self.bounds
     }
     
-    // MARK: Private vars
+    // MARK: Private methods
+    private func setUpObservers() {
+        endTimeObserver = NotificationCenter.default.addObserver(
+            forName: .AVPlayerItemDidPlayToEndTime,
+            object: nil,
+            queue: .main
+        ) { _ in
+            print("Playback Stopped.")
+        }
+    }
+    
     private func asset(withURL url: URL, onLoading: @escaping (AVAsset?) -> Void) {
         let asset = AVAsset(url: url)
         let playableKey = "playable"
@@ -79,7 +100,6 @@ final class VideoPlayerView: UIView {
         )
     }
     
-    // MARK: Private methods
     private func loadAVPlayerItem(withAsset asset: AVAsset) {
         playerItem = AVPlayerItem(asset: asset)
         playerItem?.addObserver(
@@ -95,6 +115,17 @@ final class VideoPlayerView: UIView {
             }
             
             self.avPlayerLayer.player = AVPlayer(playerItem: self.playerItem)
+            self.periodicTimeObserver = self.avPlayerLayer.player?.addPeriodicTimeObserver(
+                forInterval: CMTimeMake(value: 1, timescale: 2),
+                queue: .main
+            ) { time in
+                let seconds = Int(time.seconds)
+                let hours: Int = seconds / 3600
+                let minutes: Int = (seconds % 3600) / 60
+                let secondsConverted: Int = (seconds % 3600) % 60
+                let playheadPosition = "\(hours):\(minutes):\(secondsConverted)"
+                print("Playhead position \(playheadPosition)")
+            }
         }
     }
     
