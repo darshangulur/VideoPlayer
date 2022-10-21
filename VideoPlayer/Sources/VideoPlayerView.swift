@@ -123,15 +123,12 @@ final class VideoPlayerView: UIView {
             
             self.avPlayerLayer.player = AVPlayer(playerItem: self.playerItem)
             self.periodicTimeObserver = self.avPlayerLayer.player?.addPeriodicTimeObserver(
-                forInterval: CMTimeMake(value: 1, timescale: 2),
-                queue: .main
+                forInterval: CMTimeMake(value: 1, timescale: 2), // notify every 0.5 seconds
+                queue: .global()
             ) { time in
                 let seconds = Int(time.seconds)
-                let hours: Int = seconds / 3600
-                let minutes: Int = (seconds % 3600) / 60
-                let secondsConverted: Int = (seconds % 3600) % 60
-                let playheadPosition = "\(hours):\(minutes):\(secondsConverted)"
-                print("Playhead position \(playheadPosition)")
+                // h:m:s
+                print("Playhead position \(seconds / 3600):\((seconds % 3600) / 60):\(Double(seconds % 60) + (time.seconds - Double(seconds)))")
             }
         }
     }
