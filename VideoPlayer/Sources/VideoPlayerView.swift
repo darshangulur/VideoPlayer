@@ -31,18 +31,7 @@ final class VideoPlayerView: UIView {
         
         setUpObservers()
         
-        Task {
-            await asset(
-                withURL: url
-            ) { [weak self] asset in
-                guard let asset = asset else {
-                    print("Asset could not be loaded.")
-                    return
-                }
-                
-                self?.loadAVPlayerItem(withAsset: asset)
-            }
-        }
+        loadContent()
     }
     
     required init?(coder: NSCoder) {
@@ -77,6 +66,21 @@ final class VideoPlayerView: UIView {
             queue: .main
         ) { _ in
             print("Playback Stopped.")
+        }
+    }
+    
+    private func loadContent() {
+        Task {
+            await asset(
+                withURL: url
+            ) { [weak self] asset in
+                guard let asset = asset else {
+                    print("Asset could not be loaded.")
+                    return
+                }
+                
+                self?.loadAVPlayerItem(withAsset: asset)
+            }
         }
     }
     
