@@ -16,6 +16,7 @@
 		96CBD980290249AB00DB7F3C /* VideoPlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CBD97F290249AB00DB7F3C /* VideoPlayerTests.swift */; };
 		96CBD98A290249AB00DB7F3C /* VideoPlayerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CBD989290249AB00DB7F3C /* VideoPlayerUITests.swift */; };
 		96CBD98C290249AB00DB7F3C /* VideoPlayerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CBD98B290249AB00DB7F3C /* VideoPlayerUITestsLaunchTests.swift */; };
+		96CBD99B2902519000DB7F3C /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CBD99A2902519000DB7F3C /* VideoPlayerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		96CBD985290249AB00DB7F3C /* VideoPlayerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VideoPlayerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		96CBD989290249AB00DB7F3C /* VideoPlayerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerUITests.swift; sourceTree = "<group>"; };
 		96CBD98B290249AB00DB7F3C /* VideoPlayerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		96CBD99A2902519000DB7F3C /* VideoPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				96CBD96C290249A600DB7F3C /* ViewController.swift */,
+				96CBD99A2902519000DB7F3C /* VideoPlayerView.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -274,6 +277,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				96CBD99B2902519000DB7F3C /* VideoPlayerView.swift in Sources */,
 				96CBD96D290249A600DB7F3C /* ViewController.swift in Sources */,
 				96CBD969290249A600DB7F3C /* AppDelegate.swift in Sources */,
 				96CBD96B290249A600DB7F3C /* SceneDelegate.swift in Sources */,
